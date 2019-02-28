@@ -24,6 +24,9 @@ namespace Proyecto1
             TreeNode tNode;
             int opcion = 0;
             int j = 0;
+            int coMes = 0;
+            int pos =0;
+            int contAnio = 0;
             string anio = "", mes = "", path = "", nombre = "",paths="C:";
             // TreeNode tNode;
             /*tNode = idTreeView.Nodes.Add("2017");
@@ -94,7 +97,10 @@ namespace Proyecto1
                         } else if (cadenas=='{') {
                             opcion = 0;
                             palabra = "";
-                            Console.WriteLine(anio);
+                            tNode = idTreeView.Nodes.Add(anio);
+                            anio = "";
+                        
+                            //Console.WriteLine(anio);
                         }
                         break;
                     case 2:
@@ -107,7 +113,10 @@ namespace Proyecto1
                         {
                             opcion = 0;
                             palabra = "";
-                            Console.WriteLine(mes);
+                            idTreeView.Nodes[pos].Nodes.Add(mes);
+                            mes = "";
+                            coMes++;
+                            //Console.WriteLine(mes);
                         }
                         break;
                     case 3:
@@ -125,7 +134,7 @@ namespace Proyecto1
                         }
                         break;
                     case 4:
-                        if (Char.IsLetter(cadenas) || Char.IsDigit(cadenas))
+                        if (Char.IsLetter(cadenas) || Char.IsDigit(cadenas)|| cadenas=='_')
                         {
                             nombre += cadenas;
                             opcion = 4;
@@ -134,18 +143,27 @@ namespace Proyecto1
                         {
                             opcion = 0;
                             palabra = "";
-                            Console.WriteLine(nombre);
+                            if (coMes == 1) {
+                                idTreeView.Nodes[pos].Nodes[pos].Nodes.Add(nombre);
+                                nombre = "";
+                            } else if (coMes>0) {
+                                idTreeView.Nodes[pos].Nodes[coMes-1].Nodes.Add(nombre);
+                                nombre = "";
+                           
+                            }
                         }
                         break;
                 }
             }
-            for (int i=0;i<5;i++) { 
+            /*for (int i=0;i<5;i++) { 
 
-                tNode = idTreeView.Nodes.Add("201"+i);
-                idTreeView.Nodes[i].Nodes.Add("Enero");
-                idTreeView.Nodes[i].Nodes[0].Nodes.Add("Documento"+i); 
-            }
-            
+                  tNode = idTreeView.Nodes.Add("201"+i);
+                  idTreeView.Nodes[i].Nodes.Add("Enero");
+                  idTreeView.Nodes[i].Nodes.Add("Febrero");
+                  idTreeView.Nodes[i].Nodes[0].Nodes.Add("Documento"+i);
+                idTreeView.Nodes[i].Nodes[1].Nodes.Add("Documento" + i);
+            }*/
+
         }
 
         private void idTreeView_AfterSelect(object sender, TreeViewEventArgs e)
