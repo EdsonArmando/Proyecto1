@@ -12,9 +12,23 @@ namespace Proyecto1
 {
     public partial class Form1 : Form
     {
+        private int contError = 0;
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void analizarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (contError==0) {
+                generarTreeView();
+            }
+        }
+
+        private void generarTreeView()
+        {
+            Tree_View tree = new Tree_View();
+            tree.Show();
         }
     }
 }
