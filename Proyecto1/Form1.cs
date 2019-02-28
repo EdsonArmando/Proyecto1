@@ -12,6 +12,7 @@ namespace Proyecto1
 {
     public partial class Form1 : Form
     {
+        private string texto;
         private int contError = 0;
         public Form1()
         {
@@ -20,6 +21,7 @@ namespace Proyecto1
 
         private void analizarToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            texto = idTexto.Text;
             if (contError==0) {
                 generarTreeView();
             }
@@ -27,7 +29,8 @@ namespace Proyecto1
 
         private void generarTreeView()
         {
-            Tree_View tree = new Tree_View();
+         
+            Tree_View tree = new Tree_View(texto);
             tree.Show();
         }
     }

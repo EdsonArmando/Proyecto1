@@ -35,6 +35,7 @@
             this.analizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.acercaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.idTexto = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,11 +91,20 @@
             this.salirToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.salirToolStripMenuItem.Text = "Salir";
             // 
+            // idTexto
+            // 
+            this.idTexto.Location = new System.Drawing.Point(13, 28);
+            this.idTexto.Name = "idTexto";
+            this.idTexto.Size = new System.Drawing.Size(560, 410);
+            this.idTexto.TabIndex = 1;
+            this.idTexto.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.idTexto);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
@@ -115,6 +125,7 @@
         private System.Windows.Forms.ToolStripMenuItem analizarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem acercaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox idTexto;
     }
 }
 
