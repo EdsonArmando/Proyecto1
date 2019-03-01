@@ -150,12 +150,13 @@ namespace Proyecto1
                             if (coMes == 1) {
                                 idTreeView.Nodes[pos].Nodes[0].Nodes.Add(nombre);
                                 nombre = "";
-                                Console.WriteLine(pos + " "+ pos);
-                                Console.WriteLine(coMes);
+                                Console.WriteLine(pos + " "+ 0);
+                               
                             } else if (coMes>0) {
                                 idTreeView.Nodes[pos].Nodes[coMes-1].Nodes.Add(nombre);
-                                Console.WriteLine(pos + " " + coMes);
-                                nombre = ""; 
+                                Console.WriteLine(pos + " " + (coMes - 1));
+                                nombre = "";
+                                Console.WriteLine("-------------");
                             }
                         }
                         break;
