@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ namespace Proyecto1
 {
     public partial class Tree_View : Form
     {
+        private ArrayList ubicacionDoc = new ArrayList();
         public Tree_View(string cadena)
         {
             InitializeComponent();
@@ -28,24 +31,6 @@ namespace Proyecto1
             int pos =0;
             int contAnio = 0;
             string anio = "", mes = "", path = "", nombre = "",paths="C:";
-            // TreeNode tNode;
-            /*tNode = idTreeView.Nodes.Add("2017");
-
-            idTreeView.Nodes[0].Nodes.Add("Enero");
-            idTreeView.Nodes[0].Nodes[0].Nodes.Add("Documento 1");
-
-            idTreeView.Nodes[0].Nodes.Add("Febrero");
-            idTreeView.Nodes[0].Nodes[1].Nodes.Add("Documento 2");
-            idTreeView.Nodes[0].Nodes[1].Nodes.Add("Documento 3");
-            pala
-            idTreeView.Nodes[0].Nodes.Add("Marzo");
-            idTreeView.Nodes[0].Nodes[2].Nodes.Add("Documento 4");*/
-
-            // TreeNode tNodes;
-            /* tNodes = idTreeView.Nodes.Add("2018");
-             idTreeView.Nodes[1].Nodes.Add("Enero");
-             idTreeView.Nodes[1].Nodes[0].Nodes.Add("Documento 5");*/
-
             for ( j=0;j<cadena.Length;j++) {
                 cadenas = cadena[j];
                 palabra += cadenas;
@@ -149,14 +134,17 @@ namespace Proyecto1
                             palabra = "";
                             if (coMes == 1) {
                                 idTreeView.Nodes[pos].Nodes[0].Nodes.Add(nombre);
+                                ubicacionDoc.Add(new Path(nombre,path));
                                 nombre = "";
-                                Console.WriteLine(pos + " "+ 0);
-                               
+                                //Console.WriteLine(pos + " "+ 0);
+                                path = "";
                             } else if (coMes>0) {
                                 idTreeView.Nodes[pos].Nodes[coMes-1].Nodes.Add(nombre);
-                                Console.WriteLine(pos + " " + (coMes - 1));
+                                ubicacionDoc.Add(new Path(nombre, path));
+                                //Console.WriteLine(pos + " " + (coMes - 1));
                                 nombre = "";
-                                Console.WriteLine("-------------");
+                                //Console.WriteLine("-------------");
+                                path = "";
                             }
                         }
                         break;
@@ -173,10 +161,29 @@ namespace Proyecto1
 
         private void idTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            string texto = idTreeView.SelectedNode.Text;
-            Console.WriteLine(texto);
-            idTexto.Text = texto;
+            idTexto.Text = "";
+            string nombreDoc = idTreeView.SelectedNode.Text;
+            string path="";
+            string texto="";
+            foreach (Path p in ubicacionDoc)
+            {
+                if (nombreDoc.Equals(p.Nombre)) {
+                    path = p.Url;
+                }
+            }
+            try {
 
+                try {
+                    texto = File.ReadAllText(path);
+                    idTexto.Text = texto;
+                }
+                catch (System.IO.DirectoryNotFoundException ef) {
+                    MessageBox.Show("Path erronea");
+                }
+            }
+            catch (System.ArgumentException ex) {
+
+            }
         }
     }
 }
