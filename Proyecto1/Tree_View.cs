@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,23 +16,24 @@ namespace Proyecto1
     public partial class Tree_View : Form
     {
         private ArrayList ubicacionDoc = new ArrayList();
+        TextBox textBox1 = new TextBox();
         public Tree_View(string cadena)
         {
             InitializeComponent();
             agregarDocumento(cadena);
         }
 
-        private void agregarDocumento(string cadena){
+        private void agregarDocumento(string cadena) {
             char cadenas;
-            string palabra="";
+            string palabra = "";
             TreeNode tNode;
             int opcion = 0;
             int j = 0;
             int coMes = 0;
-            int pos =0;
+            int pos = 0;
             int contAnio = 0;
-            string anio = "", mes = "", path = "", nombre = "",paths="C:";
-            for ( j=0;j<cadena.Length;j++) {
+            string anio = "", mes = "", path = "", nombre = "", paths = "C:";
+            for (j = 0; j < cadena.Length; j++) {
                 cadenas = cadena[j];
                 palabra += cadenas;
                 if (palabra.Equals("\n") || palabra.Equals(";") || palabra.Equals("=") || palabra.Equals("Documento{") || palabra.Equals("}") || palabra.Equals(":") || palabra.Equals("\r") || palabra.Equals("\t") || palabra.Equals("\f") || palabra.Equals(" "))
@@ -52,7 +54,7 @@ namespace Proyecto1
                             case ":":
                             case "=":
                             case "}":
-                               opcion = 0;
+                                opcion = 0;
                                 break;
                             case "Año":
                                 palabra = "";
@@ -71,7 +73,7 @@ namespace Proyecto1
                                 opcion = 4;
                                 break;
                             default:
-                             
+
                                 break;
                         }
                         break;
@@ -79,16 +81,16 @@ namespace Proyecto1
                         if (Char.IsDigit(cadenas)) {
                             anio += cadenas;
                             opcion = 1;
-                        } else if (cadenas=='{') {
+                        } else if (cadenas == '{') {
                             opcion = 0;
                             palabra = "";
                             tNode = idTreeView.Nodes.Add(anio);
                             anio = "";
                             contAnio++;
-                            if (contAnio>=2) {
+                            if (contAnio >= 2) {
                                 pos++;
                                 coMes = 0;
-                            }                           
+                            }
                             //Console.WriteLine(anio);
                         }
                         break;
@@ -110,7 +112,7 @@ namespace Proyecto1
                         }
                         break;
                     case 3:
-                        if (Char.IsLetter(cadenas)|| cadenas=='/'||cadenas=='.' || Char.IsDigit(cadenas))
+                        if (Char.IsLetter(cadenas) || cadenas == '/' || cadenas == '.' || Char.IsDigit(cadenas))
                         {
                             path += cadenas;
                             opcion = 3;
@@ -123,7 +125,7 @@ namespace Proyecto1
                         }
                         break;
                     case 4:
-                        if (Char.IsLetter(cadenas) || Char.IsDigit(cadenas)|| cadenas=='_')
+                        if (Char.IsLetter(cadenas) || Char.IsDigit(cadenas) || cadenas == '_')
                         {
                             nombre += cadenas;
                             opcion = 4;
@@ -134,12 +136,12 @@ namespace Proyecto1
                             palabra = "";
                             if (coMes == 1) {
                                 idTreeView.Nodes[pos].Nodes[0].Nodes.Add(nombre);
-                                ubicacionDoc.Add(new Path(nombre,path));
+                                ubicacionDoc.Add(new Path(nombre, path));
                                 nombre = "";
                                 //Console.WriteLine(pos + " "+ 0);
                                 path = "";
-                            } else if (coMes>0) {
-                                idTreeView.Nodes[pos].Nodes[coMes-1].Nodes.Add(nombre);
+                            } else if (coMes > 0) {
+                                idTreeView.Nodes[pos].Nodes[coMes - 1].Nodes.Add(nombre);
                                 ubicacionDoc.Add(new Path(nombre, path));
                                 //Console.WriteLine(pos + " " + (coMes - 1));
                                 nombre = "";
@@ -163,8 +165,8 @@ namespace Proyecto1
         {
             idTexto.Text = "";
             string nombreDoc = idTreeView.SelectedNode.Text;
-            string path="";
-            string texto="";
+            string path = "";
+            string texto = "";
             foreach (Path p in ubicacionDoc)
             {
                 if (nombreDoc.Equals(p.Nombre)) {
@@ -185,5 +187,49 @@ namespace Proyecto1
 
             }
         }
+
+        private void idBuscar_Click(object sender, EventArgs e)
+        {
+            string exp = IdExpresion.Text;
+            Regex rx;
+           // rx = new Regex(exp);
+            char conca;
+            string palabra = "";
+            bool isMatch = false;
+            //string[] words = idTexto.Text.Split(new Char[] { ' ', ',', '.', '-', '\n', '\t' });
+            for (int i = 0; i < idTexto.Text.Length; i++) {
+                conca = idTexto.Text[i];
+                if (Char.IsLetter(conca) || Char.IsDigit(conca) || Char.IsSymbol(conca)
+                    || conca == '[' || conca == ']' || conca == '\"' || conca == '*' || conca == '_' || conca == '-') {
+                    palabra += conca;
+                } else if (conca=='\n'|| conca == ' ') {
+                    rx = new Regex(exp);
+                    isMatch = rx.IsMatch(palabra);
+              
+                    if (isMatch == true) {
+                        this.textBox1.Text = palabra;
+                        pintar(palabra);
+                        Console.WriteLine("palabra: "+ palabra+ "Es: "+isMatch);
+                    } else if (isMatch == false) {
+                    }
+                    palabra = "";
+                }
+            }
+
+        }
+        private void pintar(string palabra)
+        {
+            int inicio = 0;
+           /* String temp = idTexto.Text;
+            idTexto.Text = "";
+            idTexto.Text = temp;*/
+            while (inicio < idTexto.Text.LastIndexOf(palabra))
+            {
+                idTexto.Find(palabra, inicio, idTexto.TextLength, RichTextBoxFinds.None);
+                idTexto.SelectionBackColor = Color.Yellow;
+                inicio = idTexto.Text.IndexOf(palabra, inicio) + 1;
+            }
+        }
+
     }
 }
