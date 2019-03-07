@@ -247,16 +247,11 @@ namespace Proyecto1
         }
         private void pintar(string palabra)
         {
-            int inicio = 0;
-           /* String temp = idTexto.Text;
-            idTexto.Text = "";
-            idTexto.Text = temp;*/
-            while (inicio < idTexto.Text.LastIndexOf(palabra))
-            {
-                idTexto.Find(palabra, inicio, idTexto.TextLength, RichTextBoxFinds.None);
-                idTexto.SelectionBackColor = Color.Yellow;
-                inicio = idTexto.Text.IndexOf(palabra, inicio) + 1;
-            }
+
+            int index = idTexto.Text.IndexOf(palabra);
+            int le = palabra.Length;
+            idTexto.Select(index,le);
+            idTexto.SelectionColor = Color.Yellow;
         }
 
     }
