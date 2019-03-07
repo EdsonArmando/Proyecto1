@@ -16,6 +16,7 @@ namespace Proyecto1
     public partial class Tree_View : Form
     {
         private ArrayList ubicacionDoc = new ArrayList();
+        private List<int> ubiPala = new List<int>();
         TextBox textBox1 = new TextBox();
         public Tree_View(string cadena)
         {
@@ -176,8 +177,14 @@ namespace Proyecto1
             try {
 
                 try {
-                    texto = File.ReadAllText(path);
-                    idTexto.Text = texto;
+                    try {
+                        texto = File.ReadAllText(path);
+                        idTexto.Text = texto;
+                    }
+                    catch (System.IO.FileNotFoundException ed) {
+                        MessageBox.Show("Path erronea");
+                    }
+                 
                 }
                 catch (System.IO.DirectoryNotFoundException ef) {
                     MessageBox.Show("Path erronea");
@@ -238,7 +245,6 @@ namespace Proyecto1
             {
                 this.textBox1.Text = palabra;
                 pintar(palabra);
-                Console.WriteLine("palabra: " + palabra + "Es: " + isMatch);
             }
             else if (isMatch == false)
             {
@@ -247,11 +253,15 @@ namespace Proyecto1
         }
         private void pintar(string palabra)
         {
-
-            int index = idTexto.Text.IndexOf(palabra);
-            int le = palabra.Length;
-            idTexto.Select(index,le);
-            idTexto.SelectionColor = Color.Yellow;
+       
+        int inicio = 0;
+        while (inicio <= idTexto.Text.LastIndexOf(palabra))
+        {
+            idTexto.Find(palabra, inicio, idTexto.TextLength, RichTextBoxFinds.None);
+            idTexto.SelectionColor = Color.Green;
+            inicio = idTexto.Text.IndexOf(palabra, inicio) + 1;
+        }
+   
         }
 
     }
