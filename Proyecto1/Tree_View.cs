@@ -190,30 +190,58 @@ namespace Proyecto1
 
         private void idBuscar_Click(object sender, EventArgs e)
         {
-            string exp = IdExpresion.Text;
-            Regex rx;
-           // rx = new Regex(exp);
+            int i;
             char conca;
             string palabra = "";
-            bool isMatch = false;
-            //string[] words = idTexto.Text.Split(new Char[] { ' ', ',', '.', '-', '\n', '\t' });
-            for (int i = 0; i < idTexto.Text.Length; i++) {
+            int opc = 0;
+            for ( i = 0; i < idTexto.Text.Length; i++) {
                 conca = idTexto.Text[i];
-                if (Char.IsLetter(conca) || Char.IsDigit(conca) || Char.IsSymbol(conca)
-                    || conca == '[' || conca == ']' || conca == '\"' || conca == '*' || conca == '_' || conca == '-') {
-                    palabra += conca;
-                } else if (conca=='\n'|| conca == ' ') {
-                    rx = new Regex(exp);
-                    isMatch = rx.IsMatch(palabra);
-              
-                    if (isMatch == true) {
-                        this.textBox1.Text = palabra;
-                        pintar(palabra);
-                        Console.WriteLine("palabra: "+ palabra+ "Es: "+isMatch);
-                    } else if (isMatch == false) {
-                    }
-                    palabra = "";
+                switch (opc) {
+                    case 0:
+                        switch (conca) {
+                            case ' ':
+                            case '\r':
+                            case '\t':
+                            case '\f':
+                            case '\n':
+                                analizarPalabra(palabra);
+                                palabra = "";
+                                break;
+                            default:
+                                opc = 1;
+                                i = i - 1;
+                                break;
+                        }
+                        break;
+                    case 1:
+                        if (conca == ' ' || conca == '\n')
+                        {
+                            opc = 0;
+                            i = i - 1;
+                        }
+                        else {
+                            palabra += conca;
+                            opc = 1;
+                        }
+                        break;
                 }
+            }
+
+        }
+        private void analizarPalabra(string palabra) {
+            string exp = IdExpresion.Text;
+            Regex rx;
+            rx = new Regex(exp);
+            bool isMatch = false;
+            isMatch = rx.IsMatch(palabra);
+            if (isMatch == true)
+            {
+                this.textBox1.Text = palabra;
+                pintar(palabra);
+                Console.WriteLine("palabra: " + palabra + "Es: " + isMatch);
+            }
+            else if (isMatch == false)
+            {
             }
 
         }
