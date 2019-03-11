@@ -52,9 +52,16 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListaTokens.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListaTokens.Designer.cs">
+      <DependentUpon>ListaTokens.cs</DependentUpon>
+    </Compile>
     <Compile Include="Path.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Token.cs" />
     <Compile Include="Tree_View.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,6 +70,9 @@
     </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListaTokens.resx">
+      <DependentUpon>ListaTokens.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
