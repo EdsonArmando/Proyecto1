@@ -21,7 +21,7 @@ namespace Proyecto1
         private int fila = 1;
         private int contToken = 1;
         static ArrayList listToken = new ArrayList();
-        private static ArrayList errorToken = new ArrayList();
+        static ArrayList errorToken = new ArrayList();
         public Form1()
         {
             InitializeComponent();
@@ -34,7 +34,6 @@ namespace Proyecto1
             //if (contError==0) {
                 generarTreeView();
            // }
-            tablaSimbolos();
             mandarPalabra();
         }
 
@@ -87,16 +86,40 @@ namespace Proyecto1
                                 estadoMover = 1;
                                 estado = estado - 1;
                                 break;
+                            case '}':
+                                token += letra;
+                                estadoMover = 1;
+                                estado = estado - 1;
+                                break;
+                            case ':':
+                                token += letra;
+                                estadoMover = 1;
+                                estado = estado - 1;
+                                break;
+                            case ';':
+                                token += letra;
+                                estadoMover = 1;
+                                estado = estado - 1;
+                                break;
+                            case '=':
+                                token += letra;
+                                estadoMover = 1;
+                                estado = estado - 1;
+                                break;
+                            case '"':
+                                token += letra;
+                                estadoMover = 4;
+                                break;
                             default:
                                 if (Char.IsNumber(letra))
                                 {
                                     token += letra;
-                                    estadoMover = 8;
+                                    estadoMover = 2;
                                     estado = estado - 1;
                                 }
                                 else if (Char.IsLetter(letra))
                                 {
-                                    estadoMover = 8;
+                                    estadoMover = 3;
                                     estado = estado - 1;
                                 }
                                 else
@@ -113,6 +136,42 @@ namespace Proyecto1
                         token = "";
                         estadoMover = 0;
                         break;
+                    case 2:
+                        analizarToken(token, fila, columna, "Digito");
+                        columna++;
+                        token = "";
+                        estadoMover = 0;
+                        break;
+                    case 3:
+                        if (Char.IsLetterOrDigit(letra))
+                        {
+                            token += letra;
+                        }
+                        else {
+                            verificarReservadas(token, fila, columna);
+                            columna++;
+                            token = "";
+                            estado = estado - 1;
+                            estadoMover = 0;
+                        }
+                        break;
+                    case 4:
+                        if (Char.IsLetterOrDigit(letra) || Char.IsSymbol(letra) || letra == ' ' || letra == '_' || letra == ',')
+                        {
+                            token += letra;
+                        }
+                        else if (letra == '"')
+                        {
+                            estado = estado - 1;
+                            estadoMover = 5;
+                        }
+                        break;
+                    case 5:
+                        analizarToken(token + "\"", fila, columna, "IDENTIFICADOR");
+                        columna++;
+                        token = "";
+                        estadoMover = 0;
+                        break;
                     case 8:
                         errores(token += letra, fila, columna);
                         columna++;
@@ -123,15 +182,42 @@ namespace Proyecto1
                 }
             }
         }
+        private void verificarReservadas(string token, int fila, int columna)
+        {
+            string nombre = "";
+            bool uno = false;
+            for (int i = 0; i < palabraReservada.Length; i++)
+            {
+                nombre = palabraReservada[i];
+                if (token.Equals(nombre))
+                {
+                    i = palabraReservada.Length + 1;
+                    uno = true;
+                }
+            }
+            if (uno == true)
+            {
+                analizarToken(token, fila, columna,"RESERVADA");
+            }
+            else if (uno == false)
+            {
+                errores(token, fila, columna);
+            }
+        }
         private void errores(string token, int fila, int columna) {
-            Console.WriteLine(token + " " + fila + " " + columna);
+            int no = 0;
+            errorToken.Add(new ErrorToken(no, token,"Elemento Lexico Desconocido",fila,columna));
+            foreach (ErrorToken i in errorToken) {
+                Console.WriteLine(i.Tokens);
+            }
         }
         private void analizarToken(string token, int fila, int columna, string tipo) {
-            Console.WriteLine(token + " " + fila + " " + columna);
             listToken.Add(new Token(contToken,contToken,token,tipo,fila,columna));
             contToken++;
         }
-        private void tablaSimbolos() {
+  
+        private void tablaSimbolosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             ListaTokens lista = new ListaTokens(listToken);
 
             lista.Show();

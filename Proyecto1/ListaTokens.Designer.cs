@@ -48,7 +48,7 @@
             this.idColumna});
             this.idListView.Location = new System.Drawing.Point(12, 12);
             this.idListView.Name = "idListView";
-            this.idListView.Size = new System.Drawing.Size(776, 426);
+            this.idListView.Size = new System.Drawing.Size(1164, 725);
             this.idListView.TabIndex = 0;
             this.idListView.UseCompatibleStateImageBehavior = false;
             this.idListView.View = System.Windows.Forms.View.Details;
@@ -87,7 +87,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1188, 749);
             this.Controls.Add(this.idListView);
             this.Name = "ListaTokens";
             this.Text = "ListaTokens";
