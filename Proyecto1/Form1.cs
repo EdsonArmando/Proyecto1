@@ -14,11 +14,9 @@ namespace Proyecto1
     public partial class Form1 : Form
     {
 
-        private string[] palabraReservada = { "Año", "Mes", "Documento", "Path", "Nombre" };
+        private string[] palabraReservada = { "Año", "Mes", "Documento", "Path", "Nombre","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre" };
         private string texto;
         private int contError = 0;
-        private int columna = 1;
-        private int fila = 1;
         private int contToken = 1;
         static ArrayList listToken = new ArrayList();
         static ArrayList errorToken = new ArrayList();
@@ -61,8 +59,12 @@ namespace Proyecto1
             }
         }
         private void analizador(string texto) {
-            string token = "";
+        string token = "";
+        int columna = 0;
+        int fila = 1;
+        string palabra = "";
             char letra;
+            int contPalabra = 0;
             int estado = 0;
             int estadoMover = 0;
             for (estado=0;estado<texto.Length; estado++) {
@@ -78,7 +80,7 @@ namespace Proyecto1
                                 break;
                             case '\n':
                                 fila++;
-                                columna = 1;
+                                columna = 0;
                                 estadoMover = 0;
                                 break;
                             case '{':
@@ -131,28 +133,43 @@ namespace Proyecto1
                         }
                         break;
                     case 1:
-                        analizarToken(token, fila, columna, "Simbolo");
+                        palabra = palabra + token;
+                        if (palabra.Equals("Nombre::=")) {
+                            contPalabra = 1;
+                        }
                         columna++;
+                        analizarToken(token, fila, columna, "Simbolo");
                         token = "";
                         estadoMover = 0;
                         break;
                     case 2:
-                        analizarToken(token, fila, columna, "Digito");
                         columna++;
+                        analizarToken(token, fila, columna, "Digito");
                         token = "";
                         estadoMover = 0;
                         break;
                     case 3:
-                        if (Char.IsLetterOrDigit(letra))
+                        if (Char.IsLetterOrDigit(letra) || Char.IsSymbol(letra) || letra == ' ' || letra == '_' || letra == ',')
                         {
                             token += letra;
+                            columna++;
                         }
                         else {
-                            verificarReservadas(token, fila, columna);
-                            columna++;
-                            token = "";
-                            estado = estado - 1;
-                            estadoMover = 0;
+                            if (token.Equals("Nombre"))
+                            {
+                                palabra = token;
+                              
+                            }
+                            if (contPalabra == 0) {
+                                verificarReservadas(token, fila, columna);
+                                token = "";
+                             
+                                estado = estado - 1;
+                                estadoMover = 0;
+                            } else if (contPalabra == 1) {
+                                estadoMover = 5;
+                            }
+                            
                         }
                         break;
                     case 4:
@@ -167,14 +184,22 @@ namespace Proyecto1
                         }
                         break;
                     case 5:
-                        analizarToken(token + "\"", fila, columna, "IDENTIFICADOR");
-                        columna++;
-                        token = "";
-                        estadoMover = 0;
+                        if (contPalabra == 0) {
+                            columna++;
+                            analizarToken(token + "\"", fila, columna, "IDENTIFICADOR");
+                            token = "";
+                            estadoMover = 0;
+                        } else if (contPalabra == 1) {
+                            analizarToken(token, fila, columna, "IDENTIFICADOR");
+                            token = "";
+                            estado = estado - 2;
+                            estadoMover = 0;
+                            contPalabra = 0;
+                        }
                         break;
                     case 8:
-                        errores(token += letra, fila, columna);
                         columna++;
+                        errores(token += letra, fila, columna);   
                         contError++;
                         token = "";
                         estadoMover = 0;
