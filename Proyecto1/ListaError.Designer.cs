@@ -44,9 +44,10 @@
             this.idDescripcion,
             this.idFila,
             this.idColumna});
+            this.idListView.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.idListView.Location = new System.Drawing.Point(12, 12);
             this.idListView.Name = "idListView";
-            this.idListView.Size = new System.Drawing.Size(776, 426);
+            this.idListView.Size = new System.Drawing.Size(949, 426);
             this.idListView.TabIndex = 0;
             this.idListView.UseCompatibleStateImageBehavior = false;
             this.idListView.View = System.Windows.Forms.View.Details;
@@ -63,7 +64,7 @@
             // idDescripcion
             // 
             this.idDescripcion.Text = "Descipcion";
-            this.idDescripcion.Width = 207;
+            this.idDescripcion.Width = 353;
             // 
             // idFila
             // 
@@ -79,7 +80,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(973, 450);
             this.Controls.Add(this.idListView);
             this.Name = "ListaError";
             this.Text = "ListaError";

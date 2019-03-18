@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,9 @@ namespace Proyecto1
     {
 
         private string[] palabraReservada = { "año", "mes", "documento", "path", "nombre"};
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private string texto;
+        private string path;
         private int contError = 0;
         private int contToken = 1;
         static ArrayList listToken = new ArrayList();
@@ -29,9 +32,13 @@ namespace Proyecto1
         {
             texto = idTexto.Text;
             analizador(texto);
-            //if (contError==0) {
+            if (contError == 0)
+            {
                 generarTreeView();
-           // }
+            }
+            else {
+                MessageBox.Show("Hay errores lexicos");
+            }
             
         }
 
@@ -197,7 +204,7 @@ namespace Proyecto1
                         else if (token.Equals("::="))
                         {
                             columna++;
-                            analizarToken(token, fila, columna, "IDENTIFICADOR");
+                            analizarToken(token, fila, columna, "SIGNO ASIGNACION");
                             token = "";
                             estadoMover = 0;
                         }
@@ -346,6 +353,45 @@ namespace Proyecto1
         {
             ListaError lista = new ListaError(errorToken);
             lista.Show();
+        }
+
+        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog file = new OpenFileDialog();
+            file.Filter = "ddc files (*.ddc)|*.ddc|All files (*.*)|*.*";
+            if (file.ShowDialog() == DialogResult.OK)
+            {
+                path = file.FileName;
+                String texto = File.ReadAllText(path);
+                idTexto.Text = "\t" + texto;
+                //Console.WriteLine(path);
+            }
+        }
+
+        private void guardarComoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+
+            saveFileDialog1.Filter = "ddc files (*.ddc)|*.ddc|All files (*.*)|*.*";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string name = saveFileDialog1.FileName;
+                saveFileDialog1.InitialDirectory = @"c:\temp\";
+                File.WriteAllText(saveFileDialog1.FileName, idTexto.Text);
+            }
+        }
+
+        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StreamWriter archivo = new StreamWriter(path);
+            archivo.Write(idTexto.Text);
+            archivo.Close();
+            MessageBox.Show("Se ha guardado satisfactoriamente");
+        }
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

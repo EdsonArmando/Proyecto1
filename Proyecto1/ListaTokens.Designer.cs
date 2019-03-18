@@ -46,9 +46,10 @@
             this.idTipo,
             this.idFila,
             this.idColumna});
+            this.idListView.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.idListView.Location = new System.Drawing.Point(12, 12);
             this.idListView.Name = "idListView";
-            this.idListView.Size = new System.Drawing.Size(911, 516);
+            this.idListView.Size = new System.Drawing.Size(1037, 562);
             this.idListView.TabIndex = 0;
             this.idListView.UseCompatibleStateImageBehavior = false;
             this.idListView.View = System.Windows.Forms.View.Details;
@@ -56,12 +57,12 @@
             // idNo
             // 
             this.idNo.Text = "No. Token";
-            this.idNo.Width = 86;
+            this.idNo.Width = 195;
             // 
             // idToken
             // 
             this.idToken.Text = "ID Token";
-            this.idToken.Width = 86;
+            this.idToken.Width = 149;
             // 
             // idLexema
             // 
@@ -81,13 +82,13 @@
             // idColumna
             // 
             this.idColumna.Text = "Columna";
-            this.idColumna.Width = 199;
+            this.idColumna.Width = 116;
             // 
             // ListaTokens
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(942, 544);
+            this.ClientSize = new System.Drawing.Size(1061, 586);
             this.Controls.Add(this.idListView);
             this.Name = "ListaTokens";
             this.Text = "ListaTokens";

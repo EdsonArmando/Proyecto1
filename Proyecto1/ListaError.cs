@@ -33,6 +33,8 @@ namespace Proyecto1
                 datos[3] = Convert.ToString(i.Fila);
                 datos[4] = Convert.ToString(i.Columna);
                 itm = new ListViewItem(datos);
+                itm.Font = new System.Drawing.Font(
+        "Arial", 15, System.Drawing.FontStyle.Bold);
                 idListView.Items.Add(itm);
             }
         }
