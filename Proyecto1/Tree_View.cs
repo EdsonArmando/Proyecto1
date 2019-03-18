@@ -37,7 +37,7 @@ namespace Proyecto1
             for (j = 0; j < cadena.Length; j++) {
                 cadenas = cadena[j];
                 palabra += cadenas;
-                if (palabra.Equals("\n") || palabra.Equals(";") || palabra.Equals("=") || palabra.Equals("Documento{") || palabra.Equals("}") || palabra.Equals(":") || palabra.Equals("\r") || palabra.Equals("\t") || palabra.Equals("\f") || palabra.Equals(" "))
+                if (palabra.Equals("\n") || palabra.Equals(";") || palabra.Equals("=") || palabra.ToLower().Equals("documento{") || palabra.Equals("}") || palabra.Equals(":") || palabra.Equals("\r") || palabra.Equals("\t") || palabra.Equals("\f") || palabra.Equals(" "))
                 {
                     palabra = "";
 
@@ -46,7 +46,7 @@ namespace Proyecto1
                 }
                 switch (opcion) {
                     case 0:
-                        switch (palabra) {
+                        switch (palabra.ToLower()) {
                             case " ":
                             case "\r":
                             case "\t":
@@ -57,19 +57,19 @@ namespace Proyecto1
                             case "}":
                                 opcion = 0;
                                 break;
-                            case "Año":
+                            case "año":
                                 palabra = "";
                                 opcion = 1;
                                 break;
-                            case "Mes":
+                            case "mes":
                                 palabra = "";
                                 opcion = 2;
                                 break;
-                            case "\"C:":
+                            case "\"c:":
                                 palabra = "";
                                 opcion = 3;
                                 break;
-                            case "Nombre":
+                            case "nombre":
                                 palabra = "";
                                 opcion = 4;
                                 break;

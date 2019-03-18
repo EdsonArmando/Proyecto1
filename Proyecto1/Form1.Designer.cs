@@ -34,9 +34,9 @@
             this.guardarComoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.analizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.acercaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.idTexto = new System.Windows.Forms.RichTextBox();
             this.tablaSimbolosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tablaErroresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.idTexto = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,14 +87,6 @@
             this.acercaToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.acercaToolStripMenuItem.Text = "Acerca De";
             // 
-            // idTexto
-            // 
-            this.idTexto.Location = new System.Drawing.Point(13, 28);
-            this.idTexto.Name = "idTexto";
-            this.idTexto.Size = new System.Drawing.Size(560, 410);
-            this.idTexto.TabIndex = 1;
-            this.idTexto.Text = "";
-            // 
             // tablaSimbolosToolStripMenuItem
             // 
             this.tablaSimbolosToolStripMenuItem.Name = "tablaSimbolosToolStripMenuItem";
@@ -107,6 +99,15 @@
             this.tablaErroresToolStripMenuItem.Name = "tablaErroresToolStripMenuItem";
             this.tablaErroresToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.tablaErroresToolStripMenuItem.Text = "Tabla Errores";
+            this.tablaErroresToolStripMenuItem.Click += new System.EventHandler(this.tablaErroresToolStripMenuItem_Click);
+            // 
+            // idTexto
+            // 
+            this.idTexto.Location = new System.Drawing.Point(13, 28);
+            this.idTexto.Name = "idTexto";
+            this.idTexto.Size = new System.Drawing.Size(560, 410);
+            this.idTexto.TabIndex = 1;
+            this.idTexto.Text = "";
             // 
             // Form1
             // 
