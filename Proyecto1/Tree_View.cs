@@ -18,6 +18,8 @@ namespace Proyecto1
         private ArrayList ubicacionDoc = new ArrayList();
         private List<int> ubiPala = new List<int>();
         private Match match;
+        string nombreRegex = "";
+        string comparar = "";
         TextBox textBox1 = new TextBox();
         public Tree_View(string cadena)
         {
@@ -252,14 +254,24 @@ namespace Proyecto1
             }
 
         }
-        private void buscarCadena(string er,string palabra) {
+        private void buscarCadena(string er, string palabra) {
             string input = palabra;
             Regex regex = new Regex(er);
             match = regex.Match(input);
+            if (nombreRegex.Equals(nombreRegex)) {
+
+            }
             if (match.Success)
             {
-                pintar(match.Value);
+                nombreRegex = match.Value;
+                if (nombreRegex.Equals(comparar))
+                {
 
+                }
+                else {
+                    pintar(match.Value);
+                    comparar = match.Value;
+                }
             }
         }
         private void pintar(string palabra)
@@ -268,8 +280,8 @@ namespace Proyecto1
             int inicio = 0;
             while (inicio <= idTexto.Text.LastIndexOf(palabra))
             {
-                idTexto.Find(palabra, inicio, idTexto.TextLength, RichTextBoxFinds.None);
-                idTexto.SelectionColor = Color.Blue;
+                idTexto.Find(palabra, inicio, idTexto.TextLength, RichTextBoxFinds.MatchCase);
+                idTexto.SelectionBackColor = Color.Yellow;
                 inicio = idTexto.Text.IndexOf(palabra, inicio) + 1;
             }
         }
