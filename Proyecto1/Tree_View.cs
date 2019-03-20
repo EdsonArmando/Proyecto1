@@ -116,7 +116,7 @@ namespace Proyecto1
                         }
                         break;
                     case 3:
-                        if (Char.IsLetter(cadenas) || cadenas == '/' || cadenas == '.' || Char.IsDigit(cadenas))
+                        if (Char.IsLetter(cadenas) || cadenas == '/' || cadenas == '.' || Char.IsDigit(cadenas) || cadenas == '_')
                         {
                             path += cadenas;
                             opcion = 3;
@@ -175,6 +175,7 @@ namespace Proyecto1
             {
                 if (nombreDoc.Equals(p.Nombre)) {
                     path = p.Url;
+                    Console.WriteLine(path);
                 }
             }
             try {
@@ -186,6 +187,7 @@ namespace Proyecto1
                     }
                     catch (System.IO.FileNotFoundException ed) {
                         MessageBox.Show("Path erronea");
+                        Console.WriteLine(path);
                     }
                  
                 }
@@ -256,11 +258,9 @@ namespace Proyecto1
         }
         private void buscarCadena(string er, string palabra) {
             string input = palabra;
-            Regex regex = new Regex(er);
-            match = regex.Match(input);
-            if (nombreRegex.Equals(nombreRegex)) {
+            //Regex regex = new Regex(er);
+            match = Regex.Match(input, er, RegexOptions.Compiled);
 
-            }
             if (match.Success)
             {
                 nombreRegex = match.Value;
@@ -268,7 +268,8 @@ namespace Proyecto1
                 {
 
                 }
-                else {
+                else
+                {
                     pintar(match.Value);
                     comparar = match.Value;
                 }
@@ -276,7 +277,6 @@ namespace Proyecto1
         }
         private void pintar(string palabra)
         {
-            Console.WriteLine(palabra);
             int inicio = 0;
             while (inicio <= idTexto.Text.LastIndexOf(palabra))
             {
