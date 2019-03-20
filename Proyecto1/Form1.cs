@@ -35,12 +35,12 @@ namespace Proyecto1
             if (contError == 0)
             {
                 generarTreeView();
-              
+                mandarPalabra();
+
             }
             else {
                 MessageBox.Show("Hay errores lexicos");
             }
-            mandarPalabra();
         }
 
         private void generarTreeView()
@@ -225,7 +225,7 @@ namespace Proyecto1
                         estadoMover = 0;
                         break;
                     case 3:
-                        if (Char.IsLetterOrDigit(letra) || Char.IsSymbol(letra) || letra == ' ' || letra == '_' || letra == ',')
+                        if (Char.IsLetterOrDigit(letra) || Char.IsSymbol(letra) || letra == ' ' || letra == '_' || letra == ',' || letra == '"')
                         {
                             token += letra;
                             columna++;
@@ -326,21 +326,21 @@ namespace Proyecto1
             int no = 1;
             errorToken.Add(new ErrorToken(no, token,"Elemento Lexico Desconocido",fila,columna));
             no++;
-            FindMyText(token, "ERROR");
+            pintar(token);
         }
         private void analizarToken(string token, int fila, int columna, string tipo) {
             listToken.Add(new Token(contToken,contToken,token,tipo,fila,columna));
             contToken++;
         }
-        private void pintar(string palabra, string tipo)
+        private void pintar(string palabra)
             {
 
             int inicio = 0;          
-                while (inicio < idTexto.Text.LastIndexOf("Documento"))
+                while (inicio < idTexto.Text.LastIndexOf(palabra))
                 {
-                    idTexto.Find("Documento", inicio, idTexto.TextLength, RichTextBoxFinds.None);
-                    idTexto.SelectionColor = Color.Green;
-                    inicio = idTexto.Text.IndexOf("Documento", inicio) + 1;
+                    idTexto.Find(palabra, inicio, idTexto.TextLength, RichTextBoxFinds.None);
+                    idTexto.SelectionColor = Color.Brown;
+                    inicio = idTexto.Text.IndexOf(palabra, inicio) + 1;
                 }
             
         }
@@ -401,7 +401,6 @@ namespace Proyecto1
             bool returnValue = false;
 
             // Ensure a search string has been specified.3
-            Console.WriteLine(tipo+" "+text);
             if (tipo.Equals("RESERVADA")) {
                 if (text.Length > 0)
                 {

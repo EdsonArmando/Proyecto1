@@ -29,29 +29,19 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.guardarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.IdExpresion = new System.Windows.Forms.TextBox();
             this.idBuscar = new System.Windows.Forms.Button();
             this.idTexto = new System.Windows.Forms.RichTextBox();
             this.idTreeView = new System.Windows.Forms.TreeView();
-            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.guardarToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(984, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // guardarToolStripMenuItem
-            // 
-            this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
-            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.guardarToolStripMenuItem.Text = "Guardar";
             // 
             // IdExpresion
             // 
@@ -99,8 +89,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Tree_View";
             this.Text = "Tree_View";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,7 +97,6 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem guardarToolStripMenuItem;
         private System.Windows.Forms.TextBox IdExpresion;
         private System.Windows.Forms.Button idBuscar;
         private System.Windows.Forms.RichTextBox idTexto;
