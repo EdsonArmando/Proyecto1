@@ -30,6 +30,10 @@ namespace Proyecto1
 
         private void analizarToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            listToken.Clear();
+            errorToken.Clear();
+            contError = 0;
+            contToken = 1;
             texto = idTexto.Text;
             analizador(texto);
             if (contError == 0)
@@ -326,6 +330,7 @@ namespace Proyecto1
             int no = 1;
             errorToken.Add(new ErrorToken(no, token,"Elemento Lexico Desconocido",fila,columna));
             no++;
+            contError++;
             pintar(token);
         }
         private void analizarToken(string token, int fila, int columna, string tipo) {

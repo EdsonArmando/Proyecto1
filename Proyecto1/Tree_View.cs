@@ -36,15 +36,24 @@ namespace Proyecto1
             int coMes = 0;
             int pos = 0;
             int contAnio = 0;
+            int contNomPath =0;
             string anio = "", mes = "", path = "", nombre = "", paths = "C:";
             for (j = 0; j < cadena.Length; j++) {
                 cadenas = cadena[j];
                 palabra += cadenas;
-                if (palabra.Equals("\n") || palabra.Equals(";") || palabra.Equals("=") || palabra.ToLower().Equals("documento{") || palabra.Equals("}") || palabra.Equals(":") || palabra.Equals("\r") || palabra.Equals("\t") || palabra.Equals("\f") || palabra.Equals(" "))
+                if (palabra.Equals("\n") || palabra.Equals(";") || palabra.Equals("=") || palabra.ToLower().Equals("documento{") ||  palabra.Equals(":") || palabra.Equals("\r") || palabra.Equals("\t") || palabra.Equals("\f") || palabra.Equals(" "))
                 {
                     palabra = "";
 
                 } else if (palabra.Equals("Path")) {
+                    palabra = "";
+                }
+                else if (palabra.Equals("}"))
+                {
+                    if (contNomPath==1) {
+                        opcion = 5;
+                        contNomPath = 0;
+                    }
                     palabra = "";
                 }
                 switch (opcion) {
@@ -95,7 +104,6 @@ namespace Proyecto1
                                 pos++;
                                 coMes = 0;
                             }
-                            //Console.WriteLine(anio);
                         }
                         break;
                     case 2:
@@ -112,7 +120,6 @@ namespace Proyecto1
                             idTreeView.Nodes[pos].Nodes.Add(mes);
                             mes = "";
                             coMes++;
-                            //Console.WriteLine(mes);
                         }
                         break;
                     case 3:
@@ -122,10 +129,16 @@ namespace Proyecto1
                             opcion = 3;
                         }
                         else if (cadenas == ';')
-                        {
-                            opcion = 0;
-                            palabra = "";
+                        { 
                             path = paths + path;
+                            if (nombre.Equals(""))
+                            {
+                                opcion = 0;
+                                palabra = "";
+                            }
+                            else {
+                                opcion = 5;
+                            }
                         }
                         break;
                     case 4:
@@ -136,39 +149,44 @@ namespace Proyecto1
                         }
                         else if (cadenas == ';')
                         {
-                            opcion = 0;
-                            palabra = "";
-                            if (coMes == 1) {
-                                idTreeView.Nodes[pos].Nodes[0].Nodes.Add(nombre);
-                                ubicacionDoc.Add(new Path(nombre, path));
-                                nombre = "";
-                                //Console.WriteLine(pos + " "+ 0);
-                                path = "";
-                            } else if (coMes > 0) {
-                                idTreeView.Nodes[pos].Nodes[coMes - 1].Nodes.Add(nombre);
-                                ubicacionDoc.Add(new Path(nombre, path));
-                                //Console.WriteLine(pos + " " + (coMes - 1));
-                                nombre = "";
-                                //Console.WriteLine("-------------");
-                                path = "";
+                            if (path.Equals("")) {
+                                opcion = 0;
+                                palabra = "";
+                                contNomPath++;
+                            } else {
+                                opcion = 5;
                             }
+                        }
+                        break;
+                    case 5:
+                        opcion = 0;
+                        palabra = "";
+                        if (coMes == 1)
+                        {
+                            idTreeView.Nodes[pos].Nodes[0].Nodes.Add(nombre);
+                            ubicacionDoc.Add(new Path(nombre, path));
+                            nombre = "";
+                            path = "";
+                        }
+                        else if (coMes > 0)
+                        {
+                            idTreeView.Nodes[pos].Nodes[coMes - 1].Nodes.Add(nombre);
+                            ubicacionDoc.Add(new Path(nombre, path));
+                            nombre = "";
+                            path = "";
                         }
                         break;
                 }
             }
-            /*for (int i=0;i<2;i++) { 
-
-                  tNode = idTreeView.Nodes.Add("201"+i);
-                  idTreeView.Nodes[i].Nodes.Add("Enero");
-                  idTreeView.Nodes[i].Nodes[0].Nodes.Add("Documento"+i);
-            }*/
-
         }
 
         private void idTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            idTexto.Text = "";
+            // TreeNode onNode = idTreeView.GetNodeAt(new Point(es.X, es.Y));
+            //Console.WriteLine(idTreeView.SelectedNode = onNode);
+            int posNode = idTreeView.SelectedNode.Index;
             string nombreDoc = idTreeView.SelectedNode.Text;
+            Console.WriteLine(posNode);
             string path = "";
             string texto = "";
             foreach (Path p in ubicacionDoc)
@@ -196,7 +214,7 @@ namespace Proyecto1
                 }
             }
             catch (System.ArgumentException ex) {
-
+                idTexto.Text = "";
             }
         }
 
