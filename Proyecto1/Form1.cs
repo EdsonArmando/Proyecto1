@@ -21,6 +21,7 @@ namespace Proyecto1
         private string path;
         private int contError = 0;
         private int contToken = 1;
+        int no = 1;
         static ArrayList listToken = new ArrayList();
         static ArrayList errorToken = new ArrayList();
         public Form1()
@@ -34,6 +35,7 @@ namespace Proyecto1
             errorToken.Clear();
             contError = 0;
             contToken = 1;
+            no = 0;
             texto = idTexto.Text;
             analizador(texto);
             if (contError == 0)
@@ -327,15 +329,56 @@ namespace Proyecto1
             }
         }
         private void errores(string token, int fila, int columna) {
-            int no = 1;
+         
             errorToken.Add(new ErrorToken(no, token,"Elemento Lexico Desconocido",fila,columna));
             no++;
             contError++;
             pintar(token);
         }
         private void analizarToken(string token, int fila, int columna, string tipo) {
-            listToken.Add(new Token(contToken,contToken,token,tipo,fila,columna));
-            contToken++;
+            if (tipo.Equals("RESERVADA")) {
+                listToken.Add(new Token(contToken, 10, token, tipo, fila, columna));
+                contToken++;
+            }else if (tipo.Equals("DIGITO"))
+            {
+                listToken.Add(new Token(contToken, 20, token, tipo, fila, columna));
+                contToken++;
+            }
+            else if (tipo.Equals("CADENA"))
+            {
+                listToken.Add(new Token(contToken, 30, token, tipo, fila, columna));
+                contToken++;
+            }
+            else if (tipo.Equals("IDENTIFICADOR"))
+            {
+                listToken.Add(new Token(contToken, 40, token, tipo, fila, columna));
+                contToken++;
+            }
+            else if (tipo.Equals("DOS PUNTOS"))
+            {
+                listToken.Add(new Token(contToken, 50, token, tipo, fila, columna));
+                contToken++;
+            }
+            else if (tipo.Equals("PUNTO Y COMA"))
+            {
+                listToken.Add(new Token(contToken, 60, token, tipo, fila, columna));
+                contToken++;
+            }
+            else if (tipo.Equals("CORCHETE APERTURA"))
+            {
+                listToken.Add(new Token(contToken, 70, token, tipo, fila, columna));
+                contToken++;
+            }
+            else if (tipo.Equals("CORCHETE CIERRE"))
+            {
+                listToken.Add(new Token(contToken, 80, token, tipo, fila, columna));
+                contToken++;
+            }
+            else if (tipo.Equals("SIGNO ASIGNACION"))
+            {
+                listToken.Add(new Token(contToken, 90, token, tipo, fila, columna));
+                contToken++;
+            }
         }
         private void pintar(string palabra)
             {
@@ -343,8 +386,8 @@ namespace Proyecto1
             int inicio = 0;          
                 while (inicio < idTexto.Text.LastIndexOf(palabra))
                 {
-                    idTexto.Find(palabra, inicio, idTexto.TextLength, RichTextBoxFinds.None);
-                    idTexto.SelectionColor = Color.Brown;
+                    idTexto.Find(palabra, inicio, idTexto.TextLength, RichTextBoxFinds.MatchCase);
+                    idTexto.SelectionBackColor = Color.Brown;
                     inicio = idTexto.Text.IndexOf(palabra, inicio) + 1;
                 }
             
@@ -371,7 +414,6 @@ namespace Proyecto1
                 path = file.FileName;
                 String texto = File.ReadAllText(path);
                 idTexto.Text = "\t" + texto;
-                //Console.WriteLine(path);
             }
         }
 
@@ -402,18 +444,13 @@ namespace Proyecto1
         }
         public bool FindMyText(string text, string tipo)
         {
-            // Initialize the return value to false by default.
             bool returnValue = false;
-
-            // Ensure a search string has been specified.3
             if (tipo.Equals("RESERVADA")) {
                 if (text.Length > 0)
                 {
-                    // Obtain the location of the search string in richTextBox1.
                     int num = Math.Min(idTexto.SelectionStart + 1, idTexto.TextLength);
                     int indexToText = idTexto.Find(text, num, RichTextBoxFinds.MatchCase);
                     idTexto.SelectionColor = Color.LightBlue;
-                    // Determine if the text was found in richTextBox1.
                     if (indexToText >= 0)
                     {
                         returnValue = true;
@@ -422,11 +459,9 @@ namespace Proyecto1
             } else if (tipo.Equals("IDENTIFICADOR")) {
                 if (text.Length > 0)
                 {
-                    // Obtain the location of the search string in richTextBox1.
                     int num = Math.Min(idTexto.SelectionStart + 1, idTexto.TextLength);
                     int indexToText = idTexto.Find(text, num, RichTextBoxFinds.MatchCase);
                     idTexto.SelectionColor = Color.Orange;
-                    // Determine if the text was found in richTextBox1.
                     if (indexToText >= 0)
                     {
                         returnValue = true;
@@ -437,11 +472,9 @@ namespace Proyecto1
             {
                 if (text.Length > 0)
                 {
-                    // Obtain the location of the search string in richTextBox1.
                     int num = Math.Min(idTexto.SelectionStart + 1, idTexto.TextLength);
                     int indexToText = idTexto.Find(text, num, RichTextBoxFinds.MatchCase);
                     idTexto.SelectionColor = Color.Green;
-                    // Determine if the text was found in richTextBox1.
                     if (indexToText >= 0)
                     {
                         returnValue = true;
@@ -452,11 +485,9 @@ namespace Proyecto1
             {
                 if (text.Length > 0)
                 {
-                    // Obtain the location of the search string in richTextBox1.
                     int num = Math.Min(idTexto.SelectionStart + 1, idTexto.TextLength);
                     int indexToText = idTexto.Find(text, num, RichTextBoxFinds.MatchCase);
                     idTexto.SelectionColor = Color.Yellow;
-                    // Determine if the text was found in richTextBox1.
                     if (indexToText >= 0)
                     {
                         returnValue = true;
@@ -467,11 +498,9 @@ namespace Proyecto1
             {
                 if (text.Length > 0)
                 {
-                    // Obtain the location of the search string in richTextBox1.
                     int num = Math.Min(idTexto.SelectionStart + 1, idTexto.TextLength);
                     int indexToText = idTexto.Find(text, num, RichTextBoxFinds.MatchCase);
                     idTexto.SelectionColor = Color.Pink;
-                    // Determine if the text was found in richTextBox1.
                     if (indexToText >= 0)
                     {
                         returnValue = true;
@@ -482,11 +511,9 @@ namespace Proyecto1
             {
                 if (text.Length > 0)
                 {
-                    // Obtain the location of the search string in richTextBox1.
                     int num = Math.Min(idTexto.SelectionStart + 1, idTexto.TextLength);
                     int indexToText = idTexto.Find(text, num, RichTextBoxFinds.MatchCase);
                     idTexto.SelectionColor = Color.Red;
-                    // Determine if the text was found in richTextBox1.
                     if (indexToText >= 0)
                     {
                         returnValue = true;
@@ -497,11 +524,9 @@ namespace Proyecto1
             {
                 if (text.Length > 0)
                 {
-                    // Obtain the location of the search string in richTextBox1.
                     int num = Math.Min(idTexto.SelectionStart + 1, idTexto.TextLength);
                     int indexToText = idTexto.Find(text, num, RichTextBoxFinds.MatchCase);
                     idTexto.SelectionColor = Color.Blue;
-                    // Determine if the text was found in richTextBox1.
                     if (indexToText >= 0)
                     {
                         returnValue = true;
@@ -512,11 +537,9 @@ namespace Proyecto1
             {
                 if (text.Length > 0)
                 {
-                    // Obtain the location of the search string in richTextBox1.
                     int num = Math.Min(idTexto.SelectionStart + 1, idTexto.TextLength);
                     int indexToText = idTexto.Find(text, num, RichTextBoxFinds.MatchCase);
                     idTexto.SelectionColor = Color.Purple;
-                    // Determine if the text was found in richTextBox1.
                     if (indexToText >= 0)
                     {
                         returnValue = true;
@@ -528,4 +551,5 @@ namespace Proyecto1
         }
 
     }
+
 }
