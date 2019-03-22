@@ -186,14 +186,12 @@ namespace Proyecto1
             //Console.WriteLine(idTreeView.SelectedNode = onNode);
             int posNode = idTreeView.SelectedNode.Index;
             string nombreDoc = idTreeView.SelectedNode.Text;
-            Console.WriteLine(posNode);
             string path = "";
             string texto = "";
             foreach (Path p in ubicacionDoc)
             {
                 if (nombreDoc.Equals(p.Nombre)) {
                     path = p.Url;
-                    Console.WriteLine(path);
                 }
             }
             try {
@@ -205,7 +203,6 @@ namespace Proyecto1
                     }
                     catch (System.IO.FileNotFoundException ed) {
                         MessageBox.Show("Path erronea");
-                        Console.WriteLine(path);
                     }
                  
                 }
@@ -259,25 +256,24 @@ namespace Proyecto1
 
         }
         private void analizarPalabra(string palabra) {
-            string exp = IdExpresion.Text;
             Regex rx;
-            rx = new Regex(exp);
+            rx = new Regex(@IdExpresion.Text);
             bool isMatch = false;
             isMatch = rx.IsMatch(palabra);
             if (isMatch == true)
             {
-                buscarCadena(exp,palabra);
-                this.textBox1.Text = palabra;
+                buscarCadena(palabra);
             }
             else if (isMatch == false)
             {
             }
 
         }
-        private void buscarCadena(string er, string palabra) {
+        private void buscarCadena(string palabra)
+        {
             string input = palabra;
             //Regex regex = new Regex(er);
-            match = Regex.Match(input, er, RegexOptions.Compiled);
+            match = Regex.Match(input, @IdExpresion.Text, RegexOptions.Compiled);
 
             if (match.Success)
             {
