@@ -179,7 +179,7 @@ namespace Proyecto1
                 }
             }
         }
-
+       
         private void idTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             // TreeNode onNode = idTreeView.GetNodeAt(new Point(es.X, es.Y));

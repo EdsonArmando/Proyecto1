@@ -262,7 +262,7 @@ namespace Proyecto1
                         }
                         break;
                     case 4:
-                        if (Char.IsLetterOrDigit(letra) || Char.IsSymbol(letra) || letra == ' ' || letra == '_' || letra == ',' || letra == '/' || letra == '.' || letra == ':')
+                        if (letra !='"')
                         {
                             token += letra;
                         }
