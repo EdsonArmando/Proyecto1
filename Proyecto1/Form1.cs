@@ -46,6 +46,8 @@ namespace Proyecto1
             }
             else {
                 MessageBox.Show("Hay errores lexicos");
+                mandarPalabra();
+                mandarPalabraError();
             }
         }
 
@@ -57,11 +59,24 @@ namespace Proyecto1
         }
         private void mandarPalabra() {
             string nombre = "";
+            string comparar = "";
             string tipo = "";
             foreach (Token i in listToken) {
                 nombre = i.Lexema;
                 tipo = i.Tipo;
                 FindMyText(nombre,tipo);
+                comparar = nombre;
+            }
+        }
+        private void mandarPalabraError()
+        {
+            string nombre = "";
+            int fila = 0;
+            foreach (ErrorToken i in errorToken)
+            {
+                nombre = i.Tokens;
+                fila = i.Fila;
+                pintar2(nombre);
             }
         }
         private void analizador(string texto) {
@@ -333,7 +348,7 @@ namespace Proyecto1
             errorToken.Add(new ErrorToken(no, token,"Elemento Lexico Desconocido",fila,columna));
             no++;
             contError++;
-            pintar(token);
+   
         }
         private void analizarToken(string token, int fila, int columna, string tipo) {
             if (tipo.Equals("RESERVADA")) {
@@ -387,10 +402,26 @@ namespace Proyecto1
                 while (inicio < idTexto.Text.LastIndexOf(palabra))
                 {
                     idTexto.Find(palabra, inicio, idTexto.TextLength, RichTextBoxFinds.MatchCase);
-                    idTexto.SelectionBackColor = Color.Brown;
+                    idTexto.SelectionColor = Color.Black;
                     inicio = idTexto.Text.IndexOf(palabra, inicio) + 1;
                 }
             
+        }
+        public bool pintar2(string text)
+        {
+            bool returnValue = false;
+            if (text.Length > 0)
+            {
+                int indexToText = idTexto.Find(text);
+                idTexto.SelectionColor = Color.Black;
+
+                if (indexToText >= 0)
+                {
+                    returnValue = true;
+                }
+            }
+
+            return returnValue;
         }
         private void tablaSimbolosToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -408,7 +439,7 @@ namespace Proyecto1
         private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog file = new OpenFileDialog();
-            file.Filter = "ddc files (*.ddc)|*.ddc|All files (*.*)|*.*";
+            file.Filter = "ls files (*.ls)|*.ls|All files (*.*)|*.*";
             if (file.ShowDialog() == DialogResult.OK)
             {
                 path = file.FileName;
@@ -421,7 +452,7 @@ namespace Proyecto1
         {
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 
-            saveFileDialog1.Filter = "ddc files (*.ddc)|*.ddc|All files (*.*)|*.*";
+            saveFileDialog1.Filter = "ls files (*.ls)|*.ls|All files (*.*)|*.*";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string name = saveFileDialog1.FileName;

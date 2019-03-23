@@ -36,8 +36,8 @@
             this.acercaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tablaSimbolosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tablaErroresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.idTexto = new System.Windows.Forms.RichTextBox();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.idTexto = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -106,20 +106,20 @@
             this.tablaErroresToolStripMenuItem.Text = "Tabla Errores";
             this.tablaErroresToolStripMenuItem.Click += new System.EventHandler(this.tablaErroresToolStripMenuItem_Click);
             // 
-            // idTexto
-            // 
-            this.idTexto.Location = new System.Drawing.Point(13, 28);
-            this.idTexto.Name = "idTexto";
-            this.idTexto.Size = new System.Drawing.Size(560, 410);
-            this.idTexto.TabIndex = 1;
-            this.idTexto.Text = "";
-            // 
             // salirToolStripMenuItem
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
             this.salirToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.salirToolStripMenuItem.Text = "Salir";
             this.salirToolStripMenuItem.Click += new System.EventHandler(this.salirToolStripMenuItem_Click);
+            // 
+            // idTexto
+            // 
+            this.idTexto.Location = new System.Drawing.Point(13, 28);
+            this.idTexto.Name = "idTexto";
+            this.idTexto.Size = new System.Drawing.Size(775, 410);
+            this.idTexto.TabIndex = 1;
+            this.idTexto.Text = "";
             // 
             // Form1
             // 

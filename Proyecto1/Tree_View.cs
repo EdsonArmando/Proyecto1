@@ -273,7 +273,7 @@ namespace Proyecto1
         {
             string input = palabra;
             //Regex regex = new Regex(er);
-            match = Regex.Match(input, @IdExpresion.Text, RegexOptions.Compiled);
+            match = Regex.Match(input,@IdExpresion.Text, RegexOptions.Compiled);
 
             if (match.Success)
             {
