@@ -179,12 +179,8 @@ namespace Proyecto1
                 }
             }
         }
-       
         private void idTreeView_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            // TreeNode onNode = idTreeView.GetNodeAt(new Point(es.X, es.Y));
-            //Console.WriteLine(idTreeView.SelectedNode = onNode);
-            int posNode = idTreeView.SelectedNode.Index;
+        {          
             string nombreDoc = idTreeView.SelectedNode.Text;
             string path = "";
             string texto = "";

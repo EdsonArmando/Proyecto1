@@ -14,6 +14,7 @@ namespace Proyecto1
         string tipo;
         int fila;
         int columna;
+        int pos;
 
         public int No { get => no; set => no = value; }
         public int Tokens { get => tokens; set => tokens = value; }
@@ -21,11 +22,12 @@ namespace Proyecto1
         public string Tipo { get => tipo; set => tipo = value; }
         public int Fila { get => fila; set => fila = value; }
         public int Columna { get => columna; set => columna = value; }
+        public int Pos { get => pos; set => pos = value; }
 
         public Token()
         {
         }
-        public Token(int no, int tokens, string lexema, string tipo, int fila, int columna)
+        public Token(int no, int tokens, string lexema, string tipo, int fila, int columna,int pos)
         {
             this.no = no;
             this.tokens = tokens;
@@ -33,6 +35,7 @@ namespace Proyecto1
             this.tipo = tipo;
             this.fila = fila;
             this.columna = columna;
+            this.pos = pos;
         }
     }
 }

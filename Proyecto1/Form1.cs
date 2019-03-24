@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -31,11 +32,12 @@ namespace Proyecto1
 
         private void analizarToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            idTexto.SelectionColor = Color.Black;
             listToken.Clear();
             errorToken.Clear();
             contError = 0;
             contToken = 1;
-            no = 0;
+            no = 1;
             texto = idTexto.Text;
             analizador(texto);
             if (contError == 0)
@@ -61,22 +63,27 @@ namespace Proyecto1
             string nombre = "";
             string comparar = "";
             string tipo = "";
+            int pos = 0;
             foreach (Token i in listToken) {
                 nombre = i.Lexema;
                 tipo = i.Tipo;
-                FindMyText(nombre,tipo);
+                pos = i.Pos;
+                FindMyText(nombre,tipo,pos);
                 comparar = nombre;
+
             }
         }
         private void mandarPalabraError()
         {
             string nombre = "";
             int fila = 0;
+            int pos = 0;
             foreach (ErrorToken i in errorToken)
             {
                 nombre = i.Tokens;
                 fila = i.Fila;
-                pintar2(nombre);
+                pos = i.Pos;
+                pintar2(nombre,pos);
             }
         }
         private void analizador(string texto) {
@@ -110,7 +117,7 @@ namespace Proyecto1
                                 token = tokenPunto + letra;
                                 estadoMover = 1;
                                 estado = estado - 1;
-
+                                palabra = token;
                                 cantPunto = 0;
                             }
                         }else if(cantPunto>=2)  
@@ -118,7 +125,7 @@ namespace Proyecto1
                             int i = 0;
                             columna++;
                             while (i<tokenPunto.Length) {
-                                analizarToken(":", fila, columna++, "DOS PUNTOS");
+                                analizarToken(":", fila, columna++, "DOS PUNTOS",estado);
                                 i++;
                             }
                             columna = columna - 1;
@@ -200,48 +207,49 @@ namespace Proyecto1
                         }
                         break;
                     case 1:
-                        if (palabra.ToLower().Equals("nombre")) {
+                        if (palabra.Equals("::=")) {
                             contPalabra = 1;
                         } else if (palabra.ToLower().Equals("mes")) {
                             contPalabra = 3;
                         }
                         if (token.Equals("{")) {
                             columna++;
-                            analizarToken(token, fila, columna, "CORCHETE APERTURA");
+                            analizarToken(token, fila, columna, "CORCHETE APERTURA",estado);
                             token = "";
                             estadoMover = 0;
                         } else if (token.Equals("}")) {
                             columna++;
-                            analizarToken(token, fila, columna, "CORCHETE CIERRE");
+                            analizarToken(token, fila, columna, "CORCHETE CIERRE", estado);
                             token = "";
                             estadoMover = 0;
                         }
                         else if (token.Equals(":"))
                         {
                             columna++;
-                            analizarToken(token, fila, columna, "DOS PUNTOS");
+                            analizarToken(token, fila, columna, "DOS PUNTOS", estado);
                             token = "";
                             estadoMover = 0;
                         }
                         else if (token.Equals("::="))
                         {
                             columna++;
-                            analizarToken(token, fila, columna, "SIGNO ASIGNACION");
+                            analizarToken(token, fila, columna, "SIGNO ASIGNACION", estado);
                             token = "";
                             estadoMover = 0;
                         }
                         else if (token.Equals(";"))
                         {
                             columna++;
-                            analizarToken(token, fila, columna, "PUNTO Y COMA");
+                            analizarToken(token, fila, columna, "PUNTO Y COMA", estado);
                             token = "";
                             estadoMover = 0;
+                            contPalabra = 0;
                         }
 
                         break;
                     case 2:
                         columna++;
-                        analizarToken(token, fila, columna, "DIGITO");
+                        analizarToken(token, fila, columna, "DIGITO", estado);
                         token = "";
                         estadoMover = 0;
                         break;
@@ -252,18 +260,18 @@ namespace Proyecto1
                             columna++;
                         }
                         else {
-                            if (token.ToLower().Equals("nombre"))
+                            if (token.ToLower().Equals("mes"))
                             {
                                 palabra = token;
-
-                            } else if (token.ToLower().Equals("mes")) {
+                            }else if (token.ToLower().Equals("nombre"))
+                            {
                                 palabra = token;
                             }
                             if (contPalabra == 0) {
-                                verificarReservadas(token, fila, columna,estado);
-                                token = "";
-                                estado = estado - 1;
-                                estadoMover = 0;
+                            verificarReservadas(token, fila, columna,estado);
+                            token = "";
+                            estado = estado - 1;
+                            estadoMover = 0;
                             } else if (contPalabra == 1) {
                                 estadoMover = 5;
                             }
@@ -284,17 +292,19 @@ namespace Proyecto1
                         else if (letra == '"')
                         {
                             estado = estado - 1;
+                            contPalabra = 0;
                             estadoMover = 5;
                         }
                         break;
                     case 5:
                         if (contPalabra == 0) {
                             columna++;
-                            analizarToken(token + "\"", fila, columna, "CADENA");
+                            analizarToken(token + "\"", fila, columna, "CADENA", estado);
                             token = "";
+                            contPalabra = 0;
                             estadoMover = 0;
                         } else if (contPalabra == 1) {
-                            analizarToken(token, fila, columna, "IDENTIFICADOR");
+                            analizarToken(token, fila, columna, "IDENTIFICADOR", estado);
                             token = "";
                             palabra = "";
                             estado = estado - 2;
@@ -303,7 +313,7 @@ namespace Proyecto1
                         }
                         else if (contPalabra == 3)
                         {
-                            analizarToken(token, fila, columna, "IDENTIFICADOR");
+                            analizarToken(token, fila, columna, "IDENTIFICADOR", estado);
                             token = "";
                             palabra = "";
                             estado = estado - 1;
@@ -313,7 +323,7 @@ namespace Proyecto1
                         break;
                     case 8:
                         columna++;
-                        errores(token += letra, fila, columna);   
+                        errores(token += letra, fila, columna,estado);   
                         contError++;
                         token = "";
                         estadoMover = 0;
@@ -336,62 +346,62 @@ namespace Proyecto1
             }
             if (uno == true)
             {
-                analizarToken(token, fila, columna,"RESERVADA");
+                analizarToken(token, fila, columna, "RESERVADA",inicio);
             }
             else if (uno == false)
             {
-                errores(token, fila, columna);
+                errores(token, fila, columna,inicio);
             }
         }
-        private void errores(string token, int fila, int columna) {
+        private void errores(string token, int fila, int columna,int pos) {
          
-            errorToken.Add(new ErrorToken(no, token,"Elemento Lexico Desconocido",fila,columna));
+            errorToken.Add(new ErrorToken(no, token,"Elemento Lexico Desconocido",fila,columna,pos));
             no++;
             contError++;
    
         }
-        private void analizarToken(string token, int fila, int columna, string tipo) {
+        private void analizarToken(string token, int fila, int columna, string tipo,int pos) {
             if (tipo.Equals("RESERVADA")) {
-                listToken.Add(new Token(contToken, 10, token, tipo, fila, columna));
+                listToken.Add(new Token(contToken, 10, token, tipo, fila, columna,pos));
                 contToken++;
             }else if (tipo.Equals("DIGITO"))
             {
-                listToken.Add(new Token(contToken, 20, token, tipo, fila, columna));
+                listToken.Add(new Token(contToken, 20, token, tipo, fila, columna,pos));
                 contToken++;
             }
             else if (tipo.Equals("CADENA"))
             {
-                listToken.Add(new Token(contToken, 30, token, tipo, fila, columna));
+                listToken.Add(new Token(contToken, 30, token, tipo, fila, columna,pos));
                 contToken++;
             }
             else if (tipo.Equals("IDENTIFICADOR"))
             {
-                listToken.Add(new Token(contToken, 40, token, tipo, fila, columna));
+                listToken.Add(new Token(contToken, 40, token, tipo, fila, columna,pos));
                 contToken++;
             }
             else if (tipo.Equals("DOS PUNTOS"))
             {
-                listToken.Add(new Token(contToken, 50, token, tipo, fila, columna));
+                listToken.Add(new Token(contToken, 50, token, tipo, fila, columna,pos));
                 contToken++;
             }
             else if (tipo.Equals("PUNTO Y COMA"))
             {
-                listToken.Add(new Token(contToken, 60, token, tipo, fila, columna));
+                listToken.Add(new Token(contToken, 60, token, tipo, fila, columna,pos));
                 contToken++;
             }
             else if (tipo.Equals("CORCHETE APERTURA"))
             {
-                listToken.Add(new Token(contToken, 70, token, tipo, fila, columna));
+                listToken.Add(new Token(contToken, 70, token, tipo, fila, columna,pos));
                 contToken++;
             }
             else if (tipo.Equals("CORCHETE CIERRE"))
             {
-                listToken.Add(new Token(contToken, 80, token, tipo, fila, columna));
+                listToken.Add(new Token(contToken, 80, token, tipo, fila, columna,pos));
                 contToken++;
             }
             else if (tipo.Equals("SIGNO ASIGNACION"))
             {
-                listToken.Add(new Token(contToken, 90, token, tipo, fila, columna));
+                listToken.Add(new Token(contToken, 90, token, tipo, fila, columna,pos));
                 contToken++;
             }
         }
@@ -407,21 +417,29 @@ namespace Proyecto1
                 }
             
         }
-        public bool pintar2(string text)
+        public void pintar2(string text,int pos)
         {
-            bool returnValue = false;
-            if (text.Length > 0)
+            if (pos ==1)
             {
-                int indexToText = idTexto.Find(text);
-                idTexto.SelectionColor = Color.Black;
-
-                if (indexToText >= 0)
+                if (text.Length > 0 && pos >= 0)
                 {
-                    returnValue = true;
+                    if ((pos + 10) > pos || pos == -1)
+                    {
+                        int indexToText = idTexto.Find(text, pos, pos + 20, RichTextBoxFinds.None);
+                        idTexto.SelectionColor = Color.Black;
+                    }
                 }
             }
-
-            return returnValue;
+            else if(pos>10){
+                if (text.Length > 0 && pos >= 0)
+                {
+                    if ((pos + 10) > pos || pos == -1)
+                    {
+                        int indexToText = idTexto.Find(text, pos - 10, pos + 20, RichTextBoxFinds.None);
+                        idTexto.SelectionColor = Color.Black;
+                    }
+                }
+            }
         }
         private void tablaSimbolosToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -473,8 +491,9 @@ namespace Proyecto1
         {
             Close();
         }
-        public bool FindMyText(string text, string tipo)
+        public bool FindMyText(string text, string tipo,int pos)
         {
+            pos = pos - 5;
             bool returnValue = false;
             if (tipo.Equals("RESERVADA")) {
                 if (text.Length > 0)
@@ -553,14 +572,12 @@ namespace Proyecto1
             }
             else if (tipo.Equals("SIGNO ASIGNACION"))
             {
-                if (text.Length > 0)
+                if (text.Length > 0 && pos >= 0)
                 {
-                    int num = Math.Min(idTexto.SelectionStart + 1, idTexto.TextLength);
-                    int indexToText = idTexto.Find(text, num, RichTextBoxFinds.MatchCase);
-                    idTexto.SelectionColor = Color.Blue;
-                    if (indexToText >= 0)
+                    if ((pos+10) > pos || pos == -1)
                     {
-                        returnValue = true;
+                        int indexToText = idTexto.Find(text, pos, pos+10, RichTextBoxFinds.MatchCase);
+                        idTexto.SelectionColor = Color.Blue;
                     }
                 }
             }
