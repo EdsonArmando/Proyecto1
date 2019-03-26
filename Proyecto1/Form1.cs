@@ -598,6 +598,10 @@ namespace Proyecto1
             return returnValue;
         }
 
+        private void acercaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Nombre: Edson Armando Guix Manuel \nSección: A- \nAux. Aylin Aroche");
+        }
     }
 
 }

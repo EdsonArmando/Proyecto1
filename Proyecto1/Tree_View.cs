@@ -18,8 +18,11 @@ namespace Proyecto1
         private ArrayList ubicacionDoc = new ArrayList();
         private List<int> ubiPala = new List<int>();
         private Match match;
-        string nombreRegex = "";
-        string comparar = "";
+        private string nombreRegex = "";
+        private string mes = "";
+        private string nombreDoc = "";
+        private int click = 0;
+        private string comparar = "";
         TextBox textBox1 = new TextBox();
         public Tree_View(string cadena)
         {
@@ -34,6 +37,7 @@ namespace Proyecto1
             int opcion = 0;
             int j = 0;
             int coMes = 0;
+            int contCorche = 0;
             int pos = 0;
             int contAnio = 0;
             int contNomPath =0;
@@ -55,6 +59,11 @@ namespace Proyecto1
                         contNomPath = 0;
                     }
                     palabra = "";
+                    contCorche++;
+                    if (contCorche==2) {
+                        mes = "";
+                        contCorche = 0;
+                    }
                 }
                 switch (opcion) {
                     case 0:
@@ -97,8 +106,8 @@ namespace Proyecto1
                         } else if (cadenas == '{') {
                             opcion = 0;
                             palabra = "";
+                            mes = "";
                             tNode = idTreeView.Nodes.Add(anio);
-                            anio = "";
                             contAnio++;
                             if (contAnio >= 2) {
                                 pos++;
@@ -106,7 +115,8 @@ namespace Proyecto1
                             }
                         }
                         break;
-                    case 2:
+                    case 2: 
+
                         if (Char.IsLetter(cadenas))
                         {
                             mes += cadenas;
@@ -116,9 +126,7 @@ namespace Proyecto1
                         {
                             opcion = 0;
                             palabra = "";
-
                             idTreeView.Nodes[pos].Nodes.Add(mes);
-                            mes = "";
                             coMes++;
                         }
                         break;
@@ -164,49 +172,79 @@ namespace Proyecto1
                         if (coMes == 1)
                         {
                             idTreeView.Nodes[pos].Nodes[0].Nodes.Add(nombre);
-                            ubicacionDoc.Add(new Path(nombre, path));
+                            ubicacionDoc.Add(new Path(nombre, path,anio,mes));
                             nombre = "";
                             path = "";
+                            anio = "";
                         }
                         else if (coMes > 0)
                         {
                             idTreeView.Nodes[pos].Nodes[coMes - 1].Nodes.Add(nombre);
-                            ubicacionDoc.Add(new Path(nombre, path));
+                            ubicacionDoc.Add(new Path(nombre, path, anio, mes));
                             nombre = "";
                             path = "";
+                            mes = "";
+                            anio = "";
                         }
                         break;
                 }
             }
         }
         private void idTreeView_AfterSelect(object sender, TreeViewEventArgs e)
-        {          
-            string nombreDoc = idTreeView.SelectedNode.Text;
+        {
+           
+            if (click == 0) {
+                mes = idTreeView.SelectedNode.Text;
+                click++;
+            } else if (click == 1) {
+                nombreDoc = idTreeView.SelectedNode.Text;
+            }
+            if (mes != "" && nombreDoc != "") {
+                cargarDoc(nombreDoc, mes);
+                click = 0;
+                nombreDoc = "";
+                mes = "";
+                foreach (Path p in ubicacionDoc)
+                {
+                    Console.WriteLine(p.Nombre + " " + p.Mes);
+                }
+            }
+
+        }
+
+        private void cargarDoc(string nombre,string mes) {
             string path = "";
             string texto = "";
             foreach (Path p in ubicacionDoc)
             {
-                if (nombreDoc.Equals(p.Nombre)) {
+                if (nombre.Equals(p.Nombre)&& mes.Equals(p.Mes))
+                {
                     path = p.Url;
                 }
             }
-            try {
+            try
+            {
 
-                try {
-                    try {
+                try
+                {
+                    try
+                    {
                         texto = File.ReadAllText(path);
                         idTexto.Text = texto;
                     }
-                    catch (System.IO.FileNotFoundException ed) {
+                    catch (System.IO.FileNotFoundException ed)
+                    {
                         MessageBox.Show("Path erronea");
                     }
-                 
+
                 }
-                catch (System.IO.DirectoryNotFoundException ef) {
+                catch (System.IO.DirectoryNotFoundException ef)
+                {
                     MessageBox.Show("Path erronea");
                 }
             }
-            catch (System.ArgumentException ex) {
+            catch (System.ArgumentException ex)
+            {
                 idTexto.Text = "";
             }
         }
